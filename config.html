@@ -1,0 +1,53 @@
+<?php
+global $CFG;
+
+// set to defaults if undefined
+if (!isset ($config->expirationdays)) {
+    $config->expirationdays = 30;
+}
+if (!isset ($config->redirecturl)) {
+    $config->redirecturl = $CFG->httpswwwroot .'/login/change_password.php';
+}
+
+?>
+<table cellspacing="0" cellpadding="5" border="0">
+	
+<tr>
+   <td colspan="2">
+        <h4><?php print_string('auth_server_settings', 'auth_pwdexp') ?> </h4>
+   </td>
+</tr>
+
+<tr valign="top">
+    <td align="left"><?php print_string('auth_expirationdays_key', 'auth_pwdexp') ?>: </td>
+    <td>
+        <input name="expirationdays" type="text" size="10" value="<?php echo $config->expirationdays ?>" />
+        <?php
+
+        if (isset($err['expirationdays'])) {
+            formerr($err['expirationdays']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_expirationdays', 'auth_pwdexp') ?></td>
+</tr>
+
+<tr valign="top">
+    <td align="left"><?php print_string('auth_redirecturl_key', 'auth_pwdexp') ?>: </td>
+    <td>
+        <input name="redirecturl" type="text" size="75" value="<?php echo $config->redirecturl ?>" />
+        <?php
+
+        if (isset($err['redirecturl'])) {
+            formerr($err['redirecturl']);
+        }
+
+        ?>
+        </td>
+    <td><?php print_string('auth_redirecturl', 'auth_pwdexp') ?></td>
+</tr>
+
+
+
+</table>
