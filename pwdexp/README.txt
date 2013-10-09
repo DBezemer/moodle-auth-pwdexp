@@ -1,10 +1,10 @@
 Moodle Password Expiry
 
 Introduction
-For a customer of Stoas, a special Authentication Module has been developed to handle password expiry in Moodle 1.9 environments.
+For a customer of UP learning, a special Authentication Module has been developed to handle password expiry in Moodle environments.
 
 Installing
-Place the code in the folder pwdexp in the Moodle auth folder. ({Moodle Root\auth\pwdexp)
+Place the code in the folder pwdexp in the Moodle auth folder. ($CFG->dataroot\auth\pwdexp)
 
 Configuration
 After installation the authentication module has to be enabled and configured.
@@ -18,4 +18,5 @@ On the 'Settings' page there are two configurable options:
 1.	The amount of days for password expiration
 2.	The URL to redirect to when the password has expired (ie Moodle Password change page)
 
-Remark: After the activation of the plugin there might not be a password change history for all users. To set this history either force all users to change their passwords, or set the password update field in the database to reflect today’s timestamp value.
+Remark: After the activation of the plugin there might not be a password change history for all users. 
+For this reason the plugin will enforce a password change for every user logging in after activating the plugin directly, and not after the first interval.

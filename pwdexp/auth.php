@@ -1,19 +1,22 @@
 <?php
 /**
- * @author Martin Dougiamas
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @package moodle multiauth
+ *
+ * @package    auth
+ * @subpackage pwdexp
+ * @copyright  2013 UP learning B.V.
+ * @author     Anne Krijger & David Bezemer info@uplearning.nl
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
  *
  * Authentication Plugin: Password Expire Authentication
  * 
  * Check if user has property auth_pwdexp_date set.
  * If not assume the password has expired
- * If date is set, check if it is today or ealier
- *   If so, passsword is expired
- *   
+ * If date is set, check if it is today or earlier
+ *  if so, password is expired
  * If Password is expired
- *   set new auth_pwdexp_date to today + #days as defined (default 30 days)
- *   force password reset and redirect to defined url (default change password page)
+ *  set new auth_pwdexp_date to today + #days as defined (default 30 days)
+ *  force password reset and redirect to defined URL (default change password page)
  *   
  */
 
@@ -25,11 +28,8 @@ define('PREF_FIELD_AUTH_PWDEXP_DATE', 'auth_pwdexp_date');
 
 require_once($CFG->libdir.'/authlib.php');
 
-// function config_form($config, $err, $user_fields) { config.html
-// function process_config($config) { true / code
-
 /**
- * Pssword Expire authentication plugin.
+ * Password Expire authentication plugin.
  */
 class auth_plugin_pwdexp extends auth_plugin_base {
 
@@ -43,8 +43,7 @@ class auth_plugin_pwdexp extends auth_plugin_base {
 
 
     /**
-     * Returns false since not username password is chacked.
-     * Alternatively the check on expiration could be placed here.
+     * Returns false since username password is not checked yet.
      *
      * @param string $username The username (with system magic quotes)
      * @param string $password The password (with system magic quotes)
@@ -63,7 +62,7 @@ class auth_plugin_pwdexp extends auth_plugin_base {
      * @param string $password plain text password (with system magic quotes)
      *
      * Hook is used to check if password needs to expire and if so
-     * expired it and redirect to defiend page (default new password page)
+     * expired it and redirect to defined page (default new password page)
      * 
      */
     function user_authenticated_hook(&$user, $username, $password) {
@@ -71,9 +70,9 @@ class auth_plugin_pwdexp extends auth_plugin_base {
     }
        
     /**
-     * Pssword expiration check
+     * Password expiration check
      * Check if password needs to expire and if so
-     * expired it and redirect to defiend page (default new password page)
+     * expired it and redirect to defined page (default new password page)
      *
      * @param object $user user object, later used for $USER
      * @param string $username (with system magic quotes)
@@ -93,7 +92,7 @@ class auth_plugin_pwdexp extends auth_plugin_base {
         	$redirecturl = $config->redirecturl; 
         	
         	// force new password
-        	set_user_preference('auth_forcepasswordchange', true, $user->id);
+        	set_user_preference('auth_forcepasswordchange', 1, $user->id);
         	
         	// set new date
         	$newexpdate = mktime(0, 0, 0, date("m")  , (date("d") + $expirationdays), date("Y"));
@@ -104,7 +103,6 @@ class auth_plugin_pwdexp extends auth_plugin_base {
         }
     }
     
-
     /**
      * Prints a form for configuring this authentication plugin.
      *
