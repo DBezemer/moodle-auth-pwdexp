@@ -17,9 +17,10 @@
 /**
  * Version details
  *
- * @package    auth_ldap
- * @author     Martin Dougiamas
- * @author     Iñaki Arenaza
+ * @package    auth_pwdexp
+ * @copyright  UP learning B.V. 2013 www.uplearning.nl
+ * @author     Anne Krijger
+ * @author     David Bezemer
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

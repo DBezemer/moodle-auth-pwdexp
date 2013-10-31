@@ -1,4 +1,7 @@
-Moodle Password Expiry
+moodle-auth-pwdexp
+==================
+
+A Moodle Auth plugin that handles password expiry
 
 Introduction
 For a customer of UP learning, a special Authentication Module has been developed to handle password expiry in Moodle environments.

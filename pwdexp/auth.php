@@ -1,11 +1,28 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
+ * Version details
  *
- * @package    auth
- * @subpackage pwdexp
- * @copyright  2013 UP learning B.V.
- * @author     Anne Krijger & David Bezemer info@uplearning.nl
+ * @package    auth_pwdexp
+ * @copyright  UP learning B.V. 2013 www.uplearning.nl
+ * @author     Anne Krijger
+ * @author     David Bezemer
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ *
  *
  *
  * Authentication Plugin: Password Expire Authentication
@@ -13,10 +30,10 @@
  * Check if user has property auth_pwdexp_date set.
  * If not assume the password has expired
  * If date is set, check if it is today or earlier
- *  if so, password is expired
+ *  - if so, password is expired
  * If Password is expired
- *  set new auth_pwdexp_date to today + #days as defined (default 30 days)
- *  force password reset and redirect to defined URL (default change password page)
+ *  - set new auth_pwdexp_date to today + #days as defined (default 30 days)
+ *  - force password reset and redirect to defined URL (default change password page)
  *   
  */
 
