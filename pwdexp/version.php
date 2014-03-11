@@ -26,8 +26,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2013100900;        	// The current plugin version (Date: YYYYMMDDXX)
+$plugin->version   = 2014031100;        	// The current plugin version (Date: YYYYMMDDXX)
 $plugin->requires  = 2011011400;        	// Requires this Moodle version
 $plugin->component = 'auth_pwdexp';       	// Full name of the plugin (used for diagnostics)
-$plugin->release = '1.0 (Build: 2013100900)';
+$plugin->release = '1.1 (Build: 2014031100)';
 $plugin->maturity = MATURITY_STABLE;
