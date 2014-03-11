@@ -1,28 +1,11 @@
 <?php
-// This file is part of Moodle - http://moodle.org/
-//
-// Moodle is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
-
 /**
- * Version details
  *
- * @package    auth_pwdexp
- * @copyright  UP learning B.V. 2013 www.uplearning.nl
- * @author     Anne Krijger
- * @author     David Bezemer
+ * @package    auth
+ * @subpackage pwdexp
+ * @copyright  2013 UP learning B.V.
+ * @author     Anne Krijger & David Bezemer info@uplearning.nl
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- *
  *
  *
  * Authentication Plugin: Password Expire Authentication
@@ -30,10 +13,10 @@
  * Check if user has property auth_pwdexp_date set.
  * If not assume the password has expired
  * If date is set, check if it is today or earlier
- *  - if so, password is expired
+ *  if so, password is expired
  * If Password is expired
- *  - set new auth_pwdexp_date to today + #days as defined (default 30 days)
- *  - force password reset and redirect to defined URL (default change password page)
+ *  set new auth_pwdexp_date to today + #days as defined (default 30 days)
+ *  force password reset and redirect to defined URL (default change password page)
  *   
  */
 
@@ -97,14 +80,14 @@ class auth_plugin_pwdexp extends auth_plugin_base {
      * 
      */
     function checkPasswordExpiration(&$user, $username, $password) {
-    	global $SESSION;
+    	global $SESSION,$USER;
         $config = get_config('auth/pwdexp');
         $today = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
         // default date to -1 so if not found always before today
         $passwordExpDate = get_user_preferences(PREF_FIELD_AUTH_PWDEXP_DATE, -1, $user->id);
     	// If not settings found don't expire otherwise check date
         $passwordExpired = (($config != null && $config !== false) && ($passwordExpDate <= $today));
-        if ($passwordExpired) {
+        if ($passwordExpired && ($user->auth == 'manual')) {
         	$expirationdays = $config->expirationdays;
         	$redirecturl = $config->redirecturl; 
         	
