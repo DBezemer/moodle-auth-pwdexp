@@ -36,11 +36,18 @@ class auth_plugin_pwdexp extends auth_plugin_base {
     /**
      * Constructor.
      */
-    function auth_plugin_pwdexp() {
-        $this->authtype = 'pwdexp';
-        $this->config = get_config('auth/pwdexp');
-    }
-
+	const COMPONENT_NAME = 'auth_pwdexp';
+	const LEGACY_COMPONENT_NAME = 'auth/pwdexp';
+	public function __construct() {
+		$this->authtype = 'pwdexp';
+		$config = get_config(self::COMPONENT_NAME);
+		$legacyconfig = get_config(self::LEGACY_COMPONENT_NAME);
+		$this->config = (object)array_merge((array)$legacyconfig, (array)$config);
+	}
+	public function auth_plugin_pwdexp() {
+		debugging('Use of class name as constructor is deprecated', DEBUG_DEVELOPER);
+		self::__construct();
+	}
 
     /**
      * Returns false since username password is not checked yet.
