@@ -20,10 +20,7 @@
  *   
  */
 
-if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
-}
-
+defined('MOODLE_INTERNAL') || die(); /// It must be included froma a Moodle page
 define('PREF_FIELD_AUTH_PWDEXP_DATE', 'auth_pwdexp_date');
 
 require_once($CFG->libdir.'/authlib.php');
@@ -88,15 +85,21 @@ class auth_plugin_pwdexp extends auth_plugin_base {
      */
     function checkPasswordExpiration(&$user, $username, $password) {
     	global $SESSION,$USER;
-        $config = get_config('auth/pwdexp');
-        $today = mktime(0, 0, 0, date("m")  , date("d"), date("Y"));
-        // default date to -1 so if not found always before today
-        $passwordExpDate = get_user_preferences(PREF_FIELD_AUTH_PWDEXP_DATE, -1, $user->id);
-    	// If not settings found don't expire otherwise check date
-        $passwordExpired = (($config != null && $config !== false) && ($passwordExpDate <= $today));
+	$today = time();
+	$expirationdays = $this->config->expirationdays;
+	$defaultdate = mktime(0, 0, 0, date("m")  , (date("d") + $expirationdays+1), date("Y"));
+	$defaultexp = mktime(0, 0, 0, date("m")  , (date("d") + $expirationdays), date("Y"));
+        // default date to expiration days + 1 so if not found always allow the existing password
+        $passwordExpDate = get_user_preferences(PREF_FIELD_AUTH_PWDEXP_DATE, $defaultdate, $user->id);
+    	// If no settings found, set date and don't expire otherwise check date
+	$passwordExpDate = get_user_preferences(PREF_FIELD_AUTH_PWDEXP_DATE, $defaultdate, $user->id);
+	if ($passwordExpDate == $defaultdate) {
+		set_user_preference(PREF_FIELD_AUTH_PWDEXP_DATE, $defaultexp, $user->id);
+	}
+        $passwordExpired = ((!empty($this->config->expirationdays)) && ($passwordExpDate <= $today));
         if ($passwordExpired && ($user->auth == 'manual')) {
-        	$expirationdays = $config->expirationdays;
-        	$redirecturl = $config->redirecturl; 
+        	$expirationdays = $this->config->expirationdays;
+        	$redirecturl = $this->config->redirecturl; 
         	
         	// force new password
         	set_user_preference('auth_forcepasswordchange', 1, $user->id);
@@ -108,38 +111,6 @@ class auth_plugin_pwdexp extends auth_plugin_base {
         	// redirect when done
         	$SESSION->wantsurl = $redirecturl;
         }
-    }
-    
-    /**
-     * Prints a form for configuring this authentication plugin.
-     *
-     * This function is called from admin/auth.php, and outputs a full page with
-     * a form for configuring this plugin.
-     *
-     * @param array $page An object containing all the data for this page.
-     */
-    function config_form($config, $err, $user_fields) {
-        include "config.html";
-    }
-
-    /**
-     * Processes and stores configuration data for this authentication plugin.
-     */
-    function process_config($config) {
-    	global $CFG;
-        // set to defaults if undefined
-        if (!isset ($config->expirationdays)) {
-            $config->expirationdays = 30;
-        }
-        if (!isset ($config->redirecturl)) {
-            $config->redirecturl = $CFG->httpswwwroot .'/login/change_password.php';
-        }
-
-        // save settings
-        set_config('expirationdays', $config->expirationdays, 'auth/pwdexp');
-        set_config('redirecturl', $config->redirecturl, 'auth/pwdexp');
-        
-        return true;
     }
 }
 ?>
