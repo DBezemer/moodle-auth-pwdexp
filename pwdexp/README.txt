@@ -32,3 +32,17 @@ This module stores a password change date in the mdl_user_preferences table in t
 - timestamp (in unixtime)
 
 When you login, the plugin will check the timestamp that is stored in the database, and if the value there is older than the password expiration interval, it will insert force_passwordchange = 1 into your user preferences, triggering the Moodle password change.
+
+Update from Moodle2 to Moodle3
+==============================
+
+Introduction
+For a customer of Swingtech Consulting Inc., password expiration check module was used along with email-based-self-registration.
+Module updated by Chaitanya Varanasi (chaitanya.ism@gmail.com). 
+
+Updates
+- Compatible with PHP7.
+- Default date is set to the expiration days setting rather than the date before today.
+- Does not expire the password right away when no settings are found.
+
+
